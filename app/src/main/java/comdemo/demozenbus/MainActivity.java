@@ -1,5 +1,6 @@
 package comdemo.demozenbus;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -8,7 +9,7 @@ import android.os.Bundle;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     WebView myWebView;
 
@@ -52,12 +53,15 @@ public class MainActivity extends AppCompatActivity {
         @JavascriptInterface
         public void loadZenbus(final String namespace, final String route, final String poi){
 
-            myWebView.post(new Runnable() {
+            /*myWebView.post(new Runnable() {
                 @Override
                 public void run() {
                     myWebView.loadUrl("https://zenbus.net/"+ namespace + "?route=" + route + "&busStop=" + poi);
                 }
-            });
+            });*/
+
+            Intent intent = new Intent(MainActivity.this, ZenbusWebviewActivity.class);
+            startActivity(intent);
 
         }
     }
