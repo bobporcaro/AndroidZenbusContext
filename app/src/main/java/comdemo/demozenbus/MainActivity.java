@@ -9,6 +9,10 @@ import android.os.Bundle;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 
+
+/**
+ * Activity run at the
+ */
 public class MainActivity extends Activity {
 
     WebView myWebView;
@@ -21,7 +25,7 @@ public class MainActivity extends Activity {
         myWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
         myWebView.setWebContentsDebuggingEnabled(true);
         myWebView.getSettings().setJavaScriptEnabled(true);
-        myWebView.loadUrl("http://192.168.1.44:8080/demo/redirtan.html");
+        myWebView.loadUrl(Config.dev_srv);
     }
 
     public class WebAppInterface {
@@ -36,9 +40,7 @@ public class MainActivity extends Activity {
         public void zenbusRedir(String namespace, String route, String poi) {
             Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.byjoul.code.zenbus.android");
 
-
             if (launchIntent != null) {
-
                 launchIntent.putExtra("namespace", namespace);
                 launchIntent.putExtra("route", route);
                 launchIntent.putExtra("poi", poi);
@@ -61,8 +63,11 @@ public class MainActivity extends Activity {
             });*/
 
             Intent intent = new Intent(MainActivity.this, ZenbusWebviewActivity.class);
-            startActivity(intent);
+            intent.putExtra("namespace", namespace);
+            intent.putExtra("route", route);
+            intent.putExtra("poi", poi);
 
+            startActivity(intent);
         }
     }
 }
