@@ -11,7 +11,11 @@ import android.webkit.WebView;
 
 
 /**
- * Activity run at the
+ * Main activity to load TAN demo web app
+ *
+ * This activity exposes two javascript functions:
+ * - zenbusRedir --> start installed zenbus traveller app OR redir to google play to install it
+ * - zenbusLoad --> start in app activity to load zenbus.net into a webview
  */
 public class MainActivity extends Activity {
 
@@ -53,20 +57,12 @@ public class MainActivity extends Activity {
             startActivity(launchIntent);
         }
         @JavascriptInterface
-        public void loadZenbus(final String namespace, final String route, final String poi){
-
-            /*myWebView.post(new Runnable() {
-                @Override
-                public void run() {
-                    myWebView.loadUrl("https://zenbus.net/"+ namespace + "?route=" + route + "&busStop=" + poi);
-                }
-            });*/
-
+        public void zenbusLoad(final String namespace, final String route, final String poi){
             Intent intent = new Intent(MainActivity.this, ZenbusWebviewActivity.class);
             intent.putExtra("namespace", namespace);
             intent.putExtra("route", route);
             intent.putExtra("poi", poi);
-
+            
             startActivity(intent);
         }
     }
