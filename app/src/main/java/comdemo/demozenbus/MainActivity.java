@@ -9,6 +9,14 @@ import android.os.Bundle;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 
+
+/**
+ * Main activity to load TAN demo web app
+ *
+ * This activity exposes two javascript functions:
+ * - zenbusRedir --> start installed zenbus traveller app OR redir to google play to install it
+ * - zenbusLoad --> start in app activity to load zenbus.net into a webview
+ */
 public class MainActivity extends Activity {
 
     WebView myWebView;
@@ -21,7 +29,7 @@ public class MainActivity extends Activity {
         myWebView.addJavascriptInterface(new WebAppInterface(this), "Android");
         myWebView.setWebContentsDebuggingEnabled(true);
         myWebView.getSettings().setJavaScriptEnabled(true);
-        myWebView.loadUrl("http://192.168.1.44:8080/demo/redirtan.html");
+        myWebView.loadUrl(Config.dev_srv);
     }
 
     public class WebAppInterface {
@@ -36,9 +44,7 @@ public class MainActivity extends Activity {
         public void zenbusRedir(String namespace, String route, String poi) {
             Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.byjoul.code.zenbus.android");
 
-
             if (launchIntent != null) {
-
                 launchIntent.putExtra("namespace", namespace);
                 launchIntent.putExtra("route", route);
                 launchIntent.putExtra("poi", poi);
@@ -51,18 +57,13 @@ public class MainActivity extends Activity {
             startActivity(launchIntent);
         }
         @JavascriptInterface
-        public void loadZenbus(final String namespace, final String route, final String poi){
-
-            /*myWebView.post(new Runnable() {
-                @Override
-                public void run() {
-                    myWebView.loadUrl("https://zenbus.net/"+ namespace + "?route=" + route + "&busStop=" + poi);
-                }
-            });*/
-
+        public void zenbusLoad(final String namespace, final String route, final String poi){
             Intent intent = new Intent(MainActivity.this, ZenbusWebviewActivity.class);
+            intent.putExtra("namespace", namespace);
+            intent.putExtra("route", route);
+            intent.putExtra("poi", poi);
+            
             startActivity(intent);
-
         }
     }
 }

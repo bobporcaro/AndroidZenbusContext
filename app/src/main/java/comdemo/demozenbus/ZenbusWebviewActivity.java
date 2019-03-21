@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.webkit.WebView;
 
+
+/**
+ * Webview activity to load zenbus.net/<namespace>?route=<routeId>&busStop=<stopId>
+ */
 public class ZenbusWebviewActivity extends Activity {
 
     WebView myWebView;
@@ -14,6 +18,12 @@ public class ZenbusWebviewActivity extends Activity {
         setContentView(R.layout.activity_main);
         myWebView = (WebView) findViewById(R.id.webview);
         myWebView.getSettings().setJavaScriptEnabled(true);
-        myWebView.loadUrl("http://zenbus.net/opentourparis");
+
+        String contextualizedUrl = Config.zenbus_base_url;
+        contextualizedUrl += getIntent().getStringExtra("namespace");
+        contextualizedUrl += ("?route=" + getIntent().getStringExtra("route"));
+        contextualizedUrl += ("&busStop=" + getIntent().getStringExtra("poi"));
+
+        myWebView.loadUrl(contextualizedUrl);
     }
 }
